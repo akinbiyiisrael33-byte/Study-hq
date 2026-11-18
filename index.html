@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#172554"><link rel="manifest" href="manifest.json">
+<title>Study HQ</title>
+<style>
+:root{--navy:#172554;--blue:#2563eb;--sky:#eaf3ff;--ink:#172033;--muted:#64748b;--card:#fff}
+*{box-sizing:border-box}body{margin:0;font:15px system-ui,-apple-system,Segoe UI,sans-serif;background:#f3f6fb;color:var(--ink)}
+header{background:linear-gradient(120deg,#172554,#2563eb);color:white;padding:26px 18px 32px;border-radius:0 0 24px 24px}
+header small{opacity:.8}header h1{margin:6px 0;font-size:28px}header p{margin:0;opacity:.9}
+main{max-width:980px;margin:18px auto;padding:0 14px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:13px}
+.card{background:var(--card);border-radius:16px;padding:17px;box-shadow:0 4px 18px #1e293b0c}
+h2{font-size:18px;margin:0 0 12px}.muted{color:var(--muted);font-size:13px}
+.stat{font-size:27px;font-weight:750;color:var(--blue)}button{border:0;background:var(--blue);color:white;padding:10px 13px;border-radius:10px;font-weight:650;cursor:pointer}
+button.secondary{background:var(--sky);color:var(--navy)}.tabs{display:flex;gap:8px;overflow:auto;margin:14px 0}.tabs button{white-space:nowrap}
+.task{display:flex;gap:9px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #eef2f7}.task:last-child{border:0}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--blue)}.task label{flex:1}
+.progress{height:9px;background:#e8eef8;border-radius:9px;overflow:hidden}.progress span{display:block;height:100%;background:#3b82f6;width:0}
+textarea,input[type=text]{width:100%;padding:11px;border:1px solid #dbe3ef;border-radius:10px;font:inherit}
+section{margin:14px 0}.hidden{display:none}
+</style></head>
+<body>
+<header><small>YOUR PERSONAL LEARNING SPACE</small><h1>Study HQ</h1><p>Plan your day. Track your progress. Keep moving.</p></header>
+<main>
+<div class="grid">
+<div class="card"><div class="muted">JUPEB progress</div><div class="stat" id="jupebStat">0%</div><div class="progress"><span id="jupebBar"></span></div></div>
+<div class="card"><div class="muted">JAMB progress</div><div class="stat" id="jambStat">0%</div><div class="progress"><span id="jambBar"></span></div></div>
+<div class="card"><div class="muted">Today's focus</div><h2 id="today"></h2><p class="muted">Small consistent steps count.</p></div>
+</div>
+<div class="tabs"><button onclick="show('dashboard')">Dashboard</button><button class="secondary" onclick="show('timetable')">Timetable</button><button class="secondary" onclick="show('tracker')">Study trackers</button><button class="secondary" onclick="show('journal')">Journal</button></div>
+<section id="dashboard" class="card"><h2>Today's checklist</h2><div id="daily"></div></section>
+<section id="timetable" class="card hidden"><h2>Weekly timetable</h2><p class="muted">Your regular study and tutorial structure.</p><div id="schedule"></div></section>
+<section id="tracker" class="card hidden"><h2>Topic trackers</h2><p class="muted">Tick topics as you complete them. Your progress is saved on this device.</p><div id="subjects"></div></section>
+<section id="journal" class="card hidden"><h2>Study journal</h2><textarea id="notes" rows="6" placeholder="What did you learn today? What needs more practice?"></textarea><p><button onclick="saveNotes()">Save journal</button> <span id="saved" class="muted"></span></p></section>
+<p class="muted">Study HQ saves your checklists and journal in this browser on this device.</p>
+</main>
+<script>
+const dailyItems=['Morning devotion and prayer','JUPEB morning revision','Attend tutorial / complete lesson','Revise today’s JUPEB class','JAMB practice','Creative skill practice','Night prayer and reflection'];
+const topics={
+'JUPEB Mathematics':['Set theory and real numbers','Sequences and series','Functions and mappings','Equations and polynomials','Binomial theorem','Logarithms and indices','Matrices and determinants','Trigonometry','Limits and continuity','Differentiation','Integration','Statistics and probability'],
+'JUPEB Physics':['Measurement and dimensional analysis','Vectors and kinematics','Newton’s laws and equilibrium','Momentum and collisions','Gravitation','Work, energy and power','Circular motion and SHM','Heat and thermodynamics','Waves and optics','Electricity and circuits','Magnetism and induction','Modern physics'],
+'JUPEB Chemistry':['Mole concept and stoichiometry','Atomic structure','Periodic table and trends','Chemical bonding','Gases and solutions','Thermochemistry','Chemical equilibrium','Acids, bases and salts','Electrochemistry','Inorganic chemistry','Organic chemistry','Qualitative analysis'],
+'JAMB Mathematics':['Number bases and numeration','Fractions, decimals and percentages','Indices and logarithms','Algebra and equations','Geometry and mensuration','Trigonometry','Statistics and probability'],
+'JAMB Physics':['Measurements and units','Motion and forces','Energy and power','Heat','Waves and sound','Light and optics','Electricity','Magnetism and modern physics'],
+'JAMB Chemistry':['Atoms and molecules','Chemical combination','Acids, bases and salts','Air and water','Metals and non-metals','Organic chemistry','Chemical calculations'],
+'JAMB English':['Comprehension','Lexis and structure','Oral English','Summary and interpretation'],
+'Creative skills':['Graphic design','UI/UX learning','Video editing course','Zaire portfolio and branding']
+};
+const schedule=['Monday–Thursday: 9:00–11:00 tutorial; 11:30–1:30 tutorial; 2:00–4:00 tutorial.','Friday: tutorial ends at 12 noon.','Saturday: JUPEB practice, JAMB CBT and creative skills.','Sunday: church, Bible study, weekly review and rest.','Weekday evenings: class revision, JAMB practice and creative skill rotation.'];
+function get(k){try{return JSON.parse(localStorage.getItem(k)||'{}')}catch(e){return {}}}
+function set(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function show(id){document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden')}
+document.getElementById('today').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'});
+function renderDaily(){let state=get('daily');document.getElementById('daily').innerHTML=dailyItems.map((x,i)=>`<div class="task"><input type="checkbox" ${state[i]?'checked':''} onchange="toggleDaily(${i},this.checked)"><label>${x}</label></div>`).join('')}
+function toggleDaily(i,v){let s=get('daily');s[i]=v;set('daily',s)}
+function renderSchedule(){document.getElementById('schedule').innerHTML=schedule.map(x=>`<div class="task">${x}</div>`).join('')}
+function renderSubjects(){let s=get('topics');document.getElementById('subjects').innerHTML=Object.entries(topics).map(([name,items])=>`<section><h2>${name}</h2>${items.map((x,i)=>`<div class="task"><input type="checkbox" ${s[name+'-'+i]?'checked':''} onchange="toggleTopic('${name}',${i},this.checked)"><label>${x}</label></div>`).join('')}</section>`).join('');updateProgress()}
+function toggleTopic(n,i,v){let s=get('topics');s[n+'-'+i]=v;set('topics',s);updateProgress()}
+function updateProgress(){let s=get('topics');for(let [id,prefix] of [['jupeb','JUPEB'],['jamb','JAMB']]){let entries=Object.keys(s).filter(k=>k.startsWith(prefix));let total=Object.entries(topics).filter(([n])=>n.startsWith(prefix)).reduce((a,[,v])=>a+v.length,0);let done=entries.filter(k=>s[k]).length;let pct=total?Math.round(done/total*100):0;document.getElementById(id+'Stat').textContent=pct+'%';document.getElementById(id+'Bar').style.width=pct+'%'}}
+function saveNotes(){localStorage.setItem('notes',document.getElementById('notes').value);document.getElementById('saved').textContent='Saved on this device.'}
+document.getElementById('notes').value=localStorage.getItem('notes')||'';renderDaily();renderSchedule();renderSubjects();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script></body></html>

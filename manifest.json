@@ -1,0 +1,9 @@
+
+{
+  "name": "Study HQ",
+  "short_name": "Study HQ",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f3f6fb",
+  "theme_color": "#172554"
+}

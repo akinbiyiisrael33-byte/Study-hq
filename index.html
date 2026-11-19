@@ -1,40 +1,117 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#172554"><link rel="manifest" href="manifest.json">
-<title>Study HQ</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10182c">
+<link rel="manifest" href="manifest.json">
+<title>Study HQ — Command Centre</title>
 <style>
-:root{--navy:#172554;--blue:#2563eb;--sky:#eaf3ff;--ink:#172033;--muted:#64748b;--card:#fff}
-*{box-sizing:border-box}body{margin:0;font:15px system-ui,-apple-system,Segoe UI,sans-serif;background:#f3f6fb;color:var(--ink)}
-header{background:linear-gradient(120deg,#172554,#2563eb);color:white;padding:26px 18px 32px;border-radius:0 0 24px 24px}
-header small{opacity:.8}header h1{margin:6px 0;font-size:28px}header p{margin:0;opacity:.9}
-main{max-width:980px;margin:18px auto;padding:0 14px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:13px}
-.card{background:var(--card);border-radius:16px;padding:17px;box-shadow:0 4px 18px #1e293b0c}
-h2{font-size:18px;margin:0 0 12px}.muted{color:var(--muted);font-size:13px}
-.stat{font-size:27px;font-weight:750;color:var(--blue)}button{border:0;background:var(--blue);color:white;padding:10px 13px;border-radius:10px;font-weight:650;cursor:pointer}
-button.secondary{background:var(--sky);color:var(--navy)}.tabs{display:flex;gap:8px;overflow:auto;margin:14px 0}.tabs button{white-space:nowrap}
-.task{display:flex;gap:9px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #eef2f7}.task:last-child{border:0}
-input[type=checkbox]{width:18px;height:18px;accent-color:var(--blue)}.task label{flex:1}
-.progress{height:9px;background:#e8eef8;border-radius:9px;overflow:hidden}.progress span{display:block;height:100%;background:#3b82f6;width:0}
-textarea,input[type=text]{width:100%;padding:11px;border:1px solid #dbe3ef;border-radius:10px;font:inherit}
-section{margin:14px 0}.hidden{display:none}
-</style></head>
+:root{--bg:#0b1120;--panel:#131e33;--panel2:#1a2943;--line:#273853;--text:#edf4ff;--muted:#9db0ce;--blue:#67a6ff;--cyan:#5de0f3;--violet:#b49aff;--green:#63dfb4;--shadow:0 14px 36px #02071166}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 80% 0%,#1c2d4c 0%,#0b1120 45%);color:var(--text);font:15px system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+header{padding:22px 18px 20px;max-width:1100px;margin:auto}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#478fff,#7e67f5);display:grid;place-items:center;font-weight:900;color:white;box-shadow:0 0 25px #498bff44}
+.brandname{font-weight:850;letter-spacing:.13em;font-size:13px}
+.brandtag{font-size:11px;color:var(--muted);margin-top:2px}
+.hero{margin-top:22px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.hero h1{font-size:clamp(26px,7vw,38px);line-height:1.1;margin:5px 0 8px;letter-spacing:-.04em}
+.hero p{margin:0;color:var(--muted)}
+.datechip{background:#172742;border:1px solid #2b4367;padding:9px 12px;border-radius:14px;color:#bdd4fa;font-size:12px;white-space:nowrap}
+main{max-width:1100px;margin:auto;padding:0 14px 105px}
+.card{background:linear-gradient(145deg,#16233a,#111b2e);border:1px solid #263853;border-radius:20px;padding:17px;box-shadow:var(--shadow)}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:4px 2px 12px}
+.sectionhead h2{font-size:15px;margin:0}
+.sectionhead small{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.progress-card{position:relative;overflow:hidden;min-height:136px}
+.progress-card:after{content:"";width:120px;height:120px;position:absolute;right:-50px;top:-50px;background:#5b9cff16;border-radius:50%}
+.tag{font-size:11px;letter-spacing:.09em;color:var(--muted);font-weight:750}
+.pct{font-size:34px;font-weight:850;letter-spacing:-.04em;margin:8px 0 4px}
+.pct.blue{color:var(--blue)}.pct.violet{color:var(--violet)}
+.track{height:8px;background:#293b59;border-radius:99px;overflow:hidden;margin-top:12px}
+.track span{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#3986ff,#64d6ff);transition:width .3s}
+.track.purple span{background:linear-gradient(90deg,#8865ed,#c3a4ff)}
+.subline{color:var(--muted);font-size:12px}
+.mission{margin-top:12px}
+.missiontop{display:flex;justify-content:space-between;align-items:center}
+.missiontop h2{margin:0;font-size:16px}
+.pill{padding:6px 10px;border-radius:99px;background:#20385b;color:#a9ceff;font-size:11px}
+.missionline{height:7px;background:#293b59;border-radius:99px;margin:13px 0 5px;overflow:hidden}
+.missionline span{display:block;height:100%;background:linear-gradient(90deg,#4b91ff,#5ce1f4);width:0;border-radius:99px}
+.task{display:flex;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid #24344e}
+.task:last-child{border:0}
+.task input{width:19px;height:19px;accent-color:#63a6ff}
+.task label{flex:1;line-height:1.35}
+.task.done label{color:#92a5c4;text-decoration:line-through}
+.chartcard{margin-top:12px}
+.bars{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end;height:126px;margin:18px 0 8px}
+.barwrap{height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:7px}
+.bar{width:100%;max-width:27px;min-height:5px;border-radius:9px 9px 4px 4px;background:linear-gradient(180deg,#5ed7f5,#4285ff);box-shadow:0 0 12px #4997ff22}
+.barlabel{font-size:10px;color:var(--muted)}
+.chartlegend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:11px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--blue);margin-right:5px}
+.subjectrow{display:flex;align-items:center;gap:10px;padding:10px 0}
+.subjectrow .name{flex:1;font-size:13px}
+.subjectrow .value{font-size:12px;color:#b9d3ff;min-width:35px;text-align:right}
+.subjectmini{height:6px;border-radius:9px;background:#263751;overflow:hidden;flex:1;max-width:95px}
+.subjectmini span{height:100%;display:block;background:linear-gradient(90deg,#488bff,#62d5f2)}
+.quick{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+.quickbtn{border:1px solid #293d5c;border-radius:15px;padding:14px;background:#15233a;color:var(--text);text-align:left;text-decoration:none;display:flex;align-items:center;gap:11px;font-weight:700}
+.quickicon{width:36px;height:36px;display:grid;place-items:center;background:#223a60;border-radius:12px;color:#8ec2ff;font-size:18px}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:#0d1525f2;backdrop-filter:blur(16px);border-top:1px solid #263853;display:flex;justify-content:center;gap:4px;padding:9px 8px max(9px,env(safe-area-inset-bottom));z-index:5}
+.tabs button{flex:1;max-width:145px;border:0;border-radius:13px;padding:10px 4px;background:transparent;color:#91a6c6;font-size:11px;font-weight:700}
+.tabs button.active{background:#1d3455;color:#d8e9ff}
+section.view{display:none}section.view.active{display:block}
+.panel{margin-top:12px}
+button.primary{background:linear-gradient(110deg,#3e86ff,#5bbcf3);color:#061326;border:0;border-radius:12px;padding:11px 14px;font-weight:800}
+button{cursor:pointer}
+textarea{width:100%;background:#0e1728;color:var(--text);border:1px solid #2b405f;border-radius:13px;padding:12px;font:inherit}
+.subjectblock{padding:6px 0 10px;border-bottom:1px solid #263853}
+.subjectblock h3{font-size:14px;margin:8px 0}
+.emptyhint{font-size:12px;color:var(--muted)}
+@media(min-width:760px){.grid{grid-template-columns:repeat(4,1fr)}.dashboardlayout{display:grid;grid-template-columns:1.15fr .85fr;gap:12px;align-items:start}.mission{margin-top:0}.chartcard{margin-top:12px}.quick{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
 <body>
-<header><small>YOUR PERSONAL LEARNING SPACE</small><h1>Study HQ</h1><p>Plan your day. Track your progress. Keep moving.</p></header>
+<header>
+  <div class="brand"><div class="logo">HQ</div><div><div class="brandname">STUDY HQ</div><div class="brandtag">YOUR PERSONAL COMMAND CENTRE</div></div></div>
+  <div class="hero"><div><div class="tag">DAILY RESET</div><h1 id="greeting">Let's make today count.</h1><p>Small progress. Every single day.</p></div><div class="datechip" id="datechip">Today</div></div>
+</header>
 <main>
-<div class="grid">
-<div class="card"><div class="muted">JUPEB progress</div><div class="stat" id="jupebStat">0%</div><div class="progress"><span id="jupebBar"></span></div></div>
-<div class="card"><div class="muted">JAMB progress</div><div class="stat" id="jambStat">0%</div><div class="progress"><span id="jambBar"></span></div></div>
-<div class="card"><div class="muted">Today's focus</div><h2 id="today"></h2><p class="muted">Small consistent steps count.</p></div>
-</div>
-<div class="tabs"><button onclick="show('dashboard')">Dashboard</button><button class="secondary" onclick="show('timetable')">Timetable</button><button class="secondary" onclick="show('tracker')">Study trackers</button><button class="secondary" onclick="show('journal')">Journal</button></div>
-<section id="dashboard" class="card"><h2>Today's checklist</h2><div id="daily"></div></section>
-<section id="timetable" class="card hidden"><h2>Weekly timetable</h2><p class="muted">Your regular study and tutorial structure.</p><div id="schedule"></div></section>
-<section id="tracker" class="card hidden"><h2>Topic trackers</h2><p class="muted">Tick topics as you complete them. Your progress is saved on this device.</p><div id="subjects"></div></section>
-<section id="journal" class="card hidden"><h2>Study journal</h2><textarea id="notes" rows="6" placeholder="What did you learn today? What needs more practice?"></textarea><p><button onclick="saveNotes()">Save journal</button> <span id="saved" class="muted"></span></p></section>
-<p class="muted">Study HQ saves your checklists and journal in this browser on this device.</p>
+<section id="dashboard" class="view active">
+  <div class="grid">
+    <div class="card progress-card"><div class="tag">JUPEB · 3 SUBJECTS</div><div class="pct blue" id="jupebStat">0%</div><div class="subline">Topic completion</div><div class="track"><span id="jupebBar"></span></div></div>
+    <div class="card progress-card"><div class="tag">JAMB · 4 SUBJECTS</div><div class="pct violet" id="jambStat">0%</div><div class="subline">Topic completion</div><div class="track purple"><span id="jambBar"></span></div></div>
+  </div>
+  <div class="dashboardlayout">
+    <div class="card mission">
+      <div class="missiontop"><h2>Today's missions</h2><span class="pill" id="missioncount">0 / 7</span></div>
+      <div class="missionline"><span id="missionbar"></span></div>
+      <div id="daily"></div>
+    </div>
+    <div>
+      <div class="card chartcard"><div class="sectionhead"><h2>Subject mastery</h2><small>Based on your saved topics</small></div><div id="subjectchart"></div></div>
+      <div class="card panel"><div class="sectionhead"><h2>Quick launch</h2><small>Jump straight in</small></div><div class="quick">
+        <button class="quickbtn" onclick="show('timetable')"><span class="quickicon">▦</span>Timetable</button>
+        <button class="quickbtn" onclick="show('tracker')"><span class="quickicon">✓</span>Trackers</button>
+        <button class="quickbtn" onclick="show('journal')"><span class="quickicon">✎</span>Journal</button>
+        <button class="quickbtn" onclick="alert('HQ AI is planned for a future upgrade. This button is a preview only.')"><span class="quickicon">✦</span>HQ AI</button>
+      </div></div>
+    </div>
+  </div>
+</section>
+<section id="timetable" class="view panel card"><h2>Weekly timetable</h2><p class="subline">Your regular study and tutorial structure.</p><div id="schedule"></div></section>
+<section id="tracker" class="view panel card"><h2>Topic trackers</h2><p class="subline">Tick topics as you complete them. Progress is saved on this device.</p><div id="subjects"></div></section>
+<section id="journal" class="view panel card"><h2>Study journal</h2><p class="subline">Your notes stay saved in this browser on this device.</p><textarea id="notes" rows="8" placeholder="What did you learn today? What needs more practice?"></textarea><p><button class="primary" onclick="saveNotes()">Save journal</button> <span id="saved" class="subline"></span></p></section>
 </main>
+<nav class="tabs">
+<button class="active" onclick="show('dashboard',this)">⌂<br>Home</button>
+<button onclick="show('timetable',this)">▦<br>Timetable</button>
+<button onclick="show('tracker',this)">✓<br>Trackers</button>
+<button onclick="show('journal',this)">✎<br>Journal</button>
+</nav>
 <script>
 const dailyItems=['Morning devotion and prayer','JUPEB morning revision','Attend tutorial / complete lesson','Revise today’s JUPEB class','JAMB practice','Creative skill practice','Night prayer and reflection'];
 const topics={
@@ -45,20 +122,20 @@ const topics={
 'JAMB Physics':['Measurements and units','Motion and forces','Energy and power','Heat','Waves and sound','Light and optics','Electricity','Magnetism and modern physics'],
 'JAMB Chemistry':['Atoms and molecules','Chemical combination','Acids, bases and salts','Air and water','Metals and non-metals','Organic chemistry','Chemical calculations'],
 'JAMB English':['Comprehension','Lexis and structure','Oral English','Summary and interpretation'],
-'Creative skills':['Graphic design','UI/UX learning','Video editing course','Zaire portfolio and branding']
-};
+'Creative skills':['Graphic design','UI/UX learning','Video editing course','Zaire portfolio and branding']};
 const schedule=['Monday–Thursday: 9:00–11:00 tutorial; 11:30–1:30 tutorial; 2:00–4:00 tutorial.','Friday: tutorial ends at 12 noon.','Saturday: JUPEB practice, JAMB CBT and creative skills.','Sunday: church, Bible study, weekly review and rest.','Weekday evenings: class revision, JAMB practice and creative skill rotation.'];
 function get(k){try{return JSON.parse(localStorage.getItem(k)||'{}')}catch(e){return {}}}
 function set(k,v){localStorage.setItem(k,JSON.stringify(v))}
-function show(id){document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden')}
-document.getElementById('today').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'});
-function renderDaily(){let state=get('daily');document.getElementById('daily').innerHTML=dailyItems.map((x,i)=>`<div class="task"><input type="checkbox" ${state[i]?'checked':''} onchange="toggleDaily(${i},this.checked)"><label>${x}</label></div>`).join('')}
-function toggleDaily(i,v){let s=get('daily');s[i]=v;set('daily',s)}
+function show(id,btn){document.querySelectorAll('main section.view').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');else{const nav=[...document.querySelectorAll('.tabs button')].find(b=>b.textContent.toLowerCase().includes(id==='dashboard'?'home':id));if(nav)nav.classList.add('active')}}
+const now=new Date();document.getElementById('datechip').textContent=now.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});const hour=now.getHours();document.getElementById('greeting').textContent=hour<12?'Good morning. Let’s make today count.':hour<17?'Good afternoon. Keep your momentum.':'Good evening. Reset and finish strong.';
+function renderDaily(){let state=get('daily');document.getElementById('daily').innerHTML=dailyItems.map((x,i)=>`<div class="task ${state[i]?'done':''}"><input type="checkbox" ${state[i]?'checked':''} onchange="toggleDaily(${i},this.checked)"><label>${x}</label></div>`).join('');const done=dailyItems.filter((_,i)=>state[i]).length,pct=Math.round(done/dailyItems.length*100);document.getElementById('missioncount').textContent=done+' / '+dailyItems.length;document.getElementById('missionbar').style.width=pct+'%'}
+function toggleDaily(i,v){let s=get('daily');s[i]=v;set('daily',s);renderDaily()}
 function renderSchedule(){document.getElementById('schedule').innerHTML=schedule.map(x=>`<div class="task">${x}</div>`).join('')}
-function renderSubjects(){let s=get('topics');document.getElementById('subjects').innerHTML=Object.entries(topics).map(([name,items])=>`<section><h2>${name}</h2>${items.map((x,i)=>`<div class="task"><input type="checkbox" ${s[name+'-'+i]?'checked':''} onchange="toggleTopic('${name}',${i},this.checked)"><label>${x}</label></div>`).join('')}</section>`).join('');updateProgress()}
+function renderSubjects(){let s=get('topics');document.getElementById('subjects').innerHTML=Object.entries(topics).map(([name,items])=>`<div class="subjectblock"><h3>${name}</h3>${items.map((x,i)=>`<div class="task"><input type="checkbox" ${s[name+'-'+i]?'checked':''} onchange="toggleTopic('${name}',${i},this.checked)"><label>${x}</label></div>`).join('')}</div>`).join('');updateProgress()}
 function toggleTopic(n,i,v){let s=get('topics');s[n+'-'+i]=v;set('topics',s);updateProgress()}
-function updateProgress(){let s=get('topics');for(let [id,prefix] of [['jupeb','JUPEB'],['jamb','JAMB']]){let entries=Object.keys(s).filter(k=>k.startsWith(prefix));let total=Object.entries(topics).filter(([n])=>n.startsWith(prefix)).reduce((a,[,v])=>a+v.length,0);let done=entries.filter(k=>s[k]).length;let pct=total?Math.round(done/total*100):0;document.getElementById(id+'Stat').textContent=pct+'%';document.getElementById(id+'Bar').style.width=pct+'%'}}
+function updateProgress(){let s=get('topics');for(let [id,prefix] of [['jupeb','JUPEB'],['jamb','JAMB']]){let total=Object.entries(topics).filter(([n])=>n.startsWith(prefix)).reduce((a,[,v])=>a+v.length,0);let done=Object.keys(s).filter(k=>k.startsWith(prefix)&&s[k]).length;let pct=total?Math.round(done/total*100):0;document.getElementById(id+'Stat').textContent=pct+'%';document.getElementById(id+'Bar').style.width=pct+'%'}renderSubjectChart()}
+function renderSubjectChart(){let s=get('topics'),labels=['JUPEB Maths','JUPEB Physics','JUPEB Chemistry','JAMB Maths','JAMB Physics','JAMB Chemistry','JAMB English'];let keys=Object.keys(topics);document.getElementById('subjectchart').innerHTML=labels.map(label=>{let name=label.replace('Maths','Mathematics');let group=keys.find(k=>k===name);if(!group)group=keys.find(k=>k===label.replace('JAMB ','JAMB '));if(!group)return '';let total=topics[group].length,done=topics[group].filter((_,i)=>s[group+'-'+i]).length,p=total?Math.round(done/total*100):0;return `<div class="subjectrow"><div class="name">${label}</div><div class="subjectmini"><span style="width:${p}%"></span></div><div class="value">${p}%</div></div>`}).join('')}
 function saveNotes(){localStorage.setItem('notes',document.getElementById('notes').value);document.getElementById('saved').textContent='Saved on this device.'}
 document.getElementById('notes').value=localStorage.getItem('notes')||'';renderDaily();renderSchedule();renderSubjects();
-if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script></body></html>
